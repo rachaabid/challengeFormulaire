@@ -1,0 +1,56 @@
+<form class="container" #userForm="ngForm" (ngSubmit)="onSubmit()" novalidates>
+ 
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Informations générales</legend>
+     
+    <div class="form-group">
+      <label for="name">Nom</label>
+      <input class="form-control" type="text" name="name" minlength="3" #name="ngModel" [(ngModel)]="userModel.name" [class.is-invalid]="name.invalid && name.touched" required>
+      <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+    </div>
+        
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input class="form-control" type="email" name="email" #email="ngModel" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched" required pattern="^\([a-zA-Z0-9_\.\-])+\.\([a-zA-Z0-9_\.\-])+\@\S+$">
+      <small class="text-danger" *ngIf="email.errors?.['required']">Email is required</small>
+      <small class="text-danger" *ngIf="email.errors?.['pattern']">Email mast container 3 </small>
+    </div>
+        
+     
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Informations de payement</legend>
+    <div class="form-group">
+      <label for="typeCarte">Type de carte</label>
+      <input class="form-control" type="text" name="typeCarte" #typeCarte="ngModel" [(ngModel)]="userModel.typeCarte" [class.is-invalid]="typeCarte.invalid && typeCarte.touched" required>
+      <small class="text-danger" [class.d-none]="typeCarte.valid || typeCarte.untouched">Le type de carte est obligatoire</small>
+    </div>
+       
+    <div class="form-group">
+      <label for="numeroCarte">Numéro carte</label>
+      <input class="form-control" type="text" name="numeroCarte" #numeroCarte="ngModel" [(ngModel)]="userModel.numeroCarte"  required pattern="^\d{16}$" minlength=16>
+      <p>{{numeroCarte.errors | json}}</p>
+      <!-- <small class="text-danger" [class.d-none]="numeroCarte.valid || numeroCarte.untouched">Le numéro de carte doit avoir 16 chiffres</small> -->
+      <div *ngIf="numeroCarte.errors && (numeroCarte.invalid || numeroCarte.touched)">
+        <small class="text-danger" *ngIf="numeroCarte.errors?.['required']">Numero de la carte is required</small>
+        <small class="text-danger" *ngIf="numeroCarte.errors?.['minlength']">Le numero de carte doit avoir 16 chiffres</small>
+        <!-- <small class="text-danger" *ngIf="numeroCarte.errors?.['pattern']">Le numero de carte doit avoir 16 chiffres</small> -->
+      </div>
+    </div>
+        
+    <div class="form-group">
+      <label>Date expiration</label>
+      <input class="form-control" type="date" name="dateExp" #dateExp="ngModel" [(ngModel)]="userModel.dateExp" required>
+    </div>
+        
+    <div *ngIf="!typeCarte.errors && !numeroCarte.errors" class="form-group">
+      <label>Code</label>
+      <input class="form-control" type="number" name="code" min="0" #code="ngModel" [(ngModel)]="userModel.code" required>
+    </div>
+        
+
+  </fieldset>
+      
+   <button [disabled]="userForm.form.invalid" type="submit" class="btn btn-primary">Ajouter</button>
+  </fieldset>
+</form>
+
